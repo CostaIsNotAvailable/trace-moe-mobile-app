@@ -1,0 +1,2 @@
+rootProject.name = "Trace Moe Application"
+include ':app'
