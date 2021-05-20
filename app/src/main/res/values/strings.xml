@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Trace Moe Application</string>
+    <string name="select_image_button_text">Sélectionner une image</string>
+    <string name="how_to_get_image_dialog_title">Sélectionner une image</string>
+    <string name="how_to_get_image_cancel_button_text">Annuler</string>
+    <string name="how_to_get_image_take_photo_text">Prendre une photo</string>
+    <string name="how_to_get_image_select_from_gallery_text">Importer depuis la galerie</string>
+    <string name="image_view_content_description">Image sélectionnée</string>
 </resources>

@@ -1,0 +1,6 @@
+<resources>
+    <array name="how_to_get_image_options">
+        <item>@string/how_to_get_image_take_photo_text</item>
+        <item>@string/how_to_get_image_select_from_gallery_text</item>
+    </array>
+</resources>
