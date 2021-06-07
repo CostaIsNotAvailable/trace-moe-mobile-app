@@ -1,20 +1,26 @@
 package com.example.tracemoeapplication;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+import com.example.tracemoeapplication.enums.HowToGetImageDialogOptionEnum;
+import com.example.tracemoeapplication.interfaces.HowToGetImageDialogListener;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, HowToGetImageDialogListener{
     private Button selectImageButton;
     private ImageView imageView;
+    private static final int TAKE_PHOTO_REQUEST_CODE = 100;
+    private static final int IMPORT_FROM_GALLERY_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +39,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v == selectImageButton){
             DialogFragment howToGetImageDialogFragment = new HowToGetImageDialogFragment();
-            FragmentManager fragmentManager = this.getSupportFragmentManager();
-            howToGetImageDialogFragment.show(fragmentManager, "Dialog");
+            howToGetImageDialogFragment.show(getSupportFragmentManager(), "HowToGetImageDialog");
+        }
+    }
+
+    public void onHowToGetImageDialogDialogSelectOption(HowToGetImageDialogOptionEnum option) {
+        Uri image;
+        if(option == HowToGetImageDialogOptionEnum.IMPORT_FROM_GALLERY){
+            Intent imagePicker = new Intent(Intent.ACTION_PICK);
+            imagePicker.setType("image/*");
+            startActivityForResult(imagePicker, IMPORT_FROM_GALLERY_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == TAKE_PHOTO_REQUEST_CODE){
+            imageView.setImageBitmap((Bitmap) data.getExtras().get("data"));
+        }
+
+        if(resultCode == RESULT_OK && requestCode == IMPORT_FROM_GALLERY_REQUEST_CODE){
+            imageView.setImageURI(data.getData());
         }
     }
 }
