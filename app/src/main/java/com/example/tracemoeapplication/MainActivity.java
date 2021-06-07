@@ -45,10 +45,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onHowToGetImageDialogDialogSelectOption(HowToGetImageDialogOptionEnum option) {
         Uri image;
-        if(option == HowToGetImageDialogOptionEnum.IMPORT_FROM_GALLERY){
-            Intent imagePicker = new Intent(Intent.ACTION_PICK);
-            imagePicker.setType("image/*");
-            startActivityForResult(imagePicker, IMPORT_FROM_GALLERY_REQUEST_CODE);
+        switch (option){
+            case TAKE_PHOTO:
+                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST_CODE);
+                break;
+            case IMPORT_FROM_GALLERY:
+                Intent imagePicker = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                startActivityForResult(imagePicker, IMPORT_FROM_GALLERY_REQUEST_CODE);
+                break;
         }
     }
 
