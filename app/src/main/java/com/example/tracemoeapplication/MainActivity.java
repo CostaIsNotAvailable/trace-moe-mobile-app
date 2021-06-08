@@ -9,14 +9,22 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.tracemoeapplication.enums.HowToGetImageDialogOptionEnum;
 import com.example.tracemoeapplication.interfaces.HowToGetImageDialogListener;
+import com.example.tracemoeapplication.interfaces.RequestManagerListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, HowToGetImageDialogListener{
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, HowToGetImageDialogListener, RequestManagerListener {
     private Button selectImageButton;
     private ImageView imageView;
     private static final int TAKE_PHOTO_REQUEST_CODE = 100;
@@ -35,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selectImageButton.setOnClickListener(this);
     }
 
+    // Open image selection options dialog
     @Override
     public void onClick(View v) {
         if(v == selectImageButton){
@@ -43,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Process the option chose in the dialog
     public void onHowToGetImageDialogDialogSelectOption(HowToGetImageDialogOptionEnum option) {
-        Uri image;
         switch (option){
             case TAKE_PHOTO:
                 Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -57,15 +66,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Get the image and post it
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Bitmap imageBitmap = null;
         if(resultCode == RESULT_OK && requestCode == TAKE_PHOTO_REQUEST_CODE){
-            imageView.setImageBitmap((Bitmap) data.getExtras().get("data"));
+            imageBitmap = (Bitmap) data.getExtras().get("data");
         }
 
         if(resultCode == RESULT_OK && requestCode == IMPORT_FROM_GALLERY_REQUEST_CODE){
-            imageView.setImageURI(data.getData());
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        if(imageBitmap != null){
+            imageView.setImageBitmap(imageBitmap);
+            RequestManager.getInstance(this).postImage(bitMapToString(imageBitmap));
+        }
+    }
+
+    // Convert bitmap into file string
+    private String bitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
+    }
+
+    // Image post response
+    @Override
+    public void onPostImageResponse(JSONObject response) {
+        System.out.println(response.toString());
     }
 }

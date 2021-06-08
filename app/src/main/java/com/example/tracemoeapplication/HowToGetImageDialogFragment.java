@@ -15,7 +15,7 @@ public class HowToGetImageDialogFragment extends DialogFragment {
 
     HowToGetImageDialogListener listener;
 
-   @Override
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
