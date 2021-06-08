@@ -2,20 +2,17 @@ package com.example.tracemoeapplication;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Base64;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.tracemoeapplication.dtos.MatchListDto;
 import com.example.tracemoeapplication.interfaces.RequestManagerListener;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,24 +59,20 @@ public class RequestManager {
         String type = "image/gif";
 
         Response.Listener<NetworkResponse> responseListener = response -> {
-            try{
-                JSONObject JSONObject = new JSONObject(new String(response.data));
-                listener.onPostImageResponse(JSONObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            MatchListDto matchList = (new Gson()).fromJson(new String(response.data), MatchListDto.class);
+            listener.onPostImageResponse(matchList);
         };
 
         Response.ErrorListener responseErrorListener = error -> System.out.println(error.getMessage());
 
         MultipartRequest request = new MultipartRequest(Request.Method.POST, url, responseListener, responseErrorListener){
             @Override
-            protected Map<String, DataPart> getByteData() throws AuthFailureError {
+            protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> dataMap = new HashMap<>();
                 String imageName = System.currentTimeMillis() + ".png";
                 dataMap.put(key, new DataPart(imageName, bitmapToFileData(bitmap), type));
                 return dataMap;
-            };
+            }
         };
 
         addToRequestQueue(request);

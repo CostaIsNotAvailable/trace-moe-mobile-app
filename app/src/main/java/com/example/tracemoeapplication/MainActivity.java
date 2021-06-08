@@ -3,25 +3,20 @@ package com.example.tracemoeapplication;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.tracemoeapplication.dtos.MatchDto;
+import com.example.tracemoeapplication.dtos.MatchListDto;
 import com.example.tracemoeapplication.enums.HowToGetImageDialogOptionEnum;
 import com.example.tracemoeapplication.interfaces.HowToGetImageDialogListener;
 import com.example.tracemoeapplication.interfaces.RequestManagerListener;
-
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, HowToGetImageDialogListener, RequestManagerListener {
@@ -29,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView imageView;
     private static final int TAKE_PHOTO_REQUEST_CODE = 100;
     private static final int IMPORT_FROM_GALLERY_REQUEST_CODE = 101;
+    private MatchListDto matchList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +68,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap imageBitmap = null;
         if(resultCode == RESULT_OK && requestCode == TAKE_PHOTO_REQUEST_CODE){
-            imageBitmap = (Bitmap) data.getExtras().get("data");
+            if (data != null) {
+                imageBitmap = (Bitmap) data.getExtras().get("data");
+            }
         }
 
         if(resultCode == RESULT_OK && requestCode == IMPORT_FROM_GALLERY_REQUEST_CODE){
             try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                if (data != null) {
+                    imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Image post response
     @Override
-    public void onPostImageResponse(JSONObject response) {
-        System.out.println(response.toString());
+    public void onPostImageResponse(MatchListDto _matchList) {
+        matchList = _matchList;
     }
 }
