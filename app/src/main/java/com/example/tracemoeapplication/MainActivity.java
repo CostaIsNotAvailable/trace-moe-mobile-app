@@ -85,15 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(imageBitmap != null){
             imageView.setImageBitmap(imageBitmap);
-            RequestManager.getInstance(this).postImage(bitMapToString(imageBitmap));
+            RequestManager.getInstance(this).postImage(imageBitmap);
         }
-    }
-
-    // Convert bitmap into file string
-    private String bitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
     }
 
     // Image post response
