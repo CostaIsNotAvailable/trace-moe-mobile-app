@@ -1,8 +1,9 @@
 package com.example.tracemoeapplication.dtos;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public class MatchListDto {
+public class MatchListDto implements Serializable {
     private long frameCount;
     private String error;
     private Collection<MatchDto> result;

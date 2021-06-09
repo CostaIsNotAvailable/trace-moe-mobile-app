@@ -1,4 +1,4 @@
-package com.example.tracemoeapplication;
+package com.example.tracemoeapplication.requestmanager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.example.tracemoeapplication.requestmanager.DataPart;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

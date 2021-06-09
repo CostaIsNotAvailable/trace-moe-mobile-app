@@ -1,4 +1,4 @@
-package com.example.tracemoeapplication;
+package com.example.tracemoeapplication.requestmanager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,12 +7,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.tracemoeapplication.dtos.MatchDto;
 import com.example.tracemoeapplication.dtos.MatchListDto;
 import com.example.tracemoeapplication.interfaces.RequestManagerListener;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;

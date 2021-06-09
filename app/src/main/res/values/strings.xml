@@ -6,4 +6,9 @@
     <string name="how_to_get_image_take_photo_text">Prendre une photo</string>
     <string name="how_to_get_image_select_from_gallery_text">Importer depuis la galerie</string>
     <string name="image_view_content_description">Image sélectionnée</string>
+    <string name="image_slide_content_description">Extrait</string>
+    <string name="episode_slide_text">Épisode %1$d</string>
+    <string name="time_slide_text">%1$s - %2$s</string>
+    <string name="similarity_slide_text">Similaire à %1$s</string>
+    <string name="time_form_text">%1$s:%2$s:%3$s</string>
 </resources>

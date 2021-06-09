@@ -1,6 +1,8 @@
 package com.example.tracemoeapplication.dtos;
 
-public class MatchDto {
+import java.io.Serializable;
+
+public class MatchDto implements Serializable {
     private long anilist;
     private String filename;
     private int episode;

@@ -1,4 +1,4 @@
-package com.example.tracemoeapplication;
+package com.example.tracemoeapplication.requestmanager;
 
 class DataPart {
     private String fileName;

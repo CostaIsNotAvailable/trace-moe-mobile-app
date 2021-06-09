@@ -11,12 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.tracemoeapplication.dtos.MatchDto;
 import com.example.tracemoeapplication.dtos.MatchListDto;
 import com.example.tracemoeapplication.enums.HowToGetImageDialogOptionEnum;
 import com.example.tracemoeapplication.interfaces.HowToGetImageDialogListener;
 import com.example.tracemoeapplication.interfaces.RequestManagerListener;
-import org.json.JSONObject;
+import com.example.tracemoeapplication.requestmanager.RequestManager;
+import com.example.tracemoeapplication.screenslide.ScreenSlidePagerActivity;
+
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, HowToGetImageDialogListener, RequestManagerListener {
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView imageView;
     private static final int TAKE_PHOTO_REQUEST_CODE = 100;
     private static final int IMPORT_FROM_GALLERY_REQUEST_CODE = 101;
-    private MatchListDto matchList;
+    public static final String EXTRA_MATCH_LIST = "EXTRA_MATCH_LIST";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Image post response
     @Override
-    public void onPostImageResponse(MatchListDto _matchList) {
-        matchList = _matchList;
+    public void onPostImageResponse(MatchListDto matchList) {
+        displayMatchList(matchList);
+    }
+
+    // Launch the activity that will display the list
+    public void displayMatchList(MatchListDto matchList){
+        Intent intent = new Intent(this, ScreenSlidePagerActivity.class);
+        intent.putExtra(EXTRA_MATCH_LIST, matchList);
+        startActivity(intent);
     }
 }
