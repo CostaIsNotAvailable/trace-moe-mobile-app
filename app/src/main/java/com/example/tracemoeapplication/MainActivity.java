@@ -74,21 +74,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap imageBitmap = null;
-        if(resultCode == RESULT_OK && requestCode == TAKE_PHOTO_REQUEST_CODE){
-            if (data != null) {
-                imageBitmap = (Bitmap) data.getExtras().get("data");
-            }
+
+        if(resultCode != RESULT_OK){
+        return;
         }
 
-        if(resultCode == RESULT_OK && requestCode == IMPORT_FROM_GALLERY_REQUEST_CODE){
-            try {
+        Bitmap imageBitmap = null;
+        switch (requestCode){
+            case TAKE_PHOTO_REQUEST_CODE:
                 if (data != null) {
-                    imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                    imageBitmap = (Bitmap) data.getExtras().get("data");
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                break;
+            case IMPORT_FROM_GALLERY_REQUEST_CODE:
+                try {
+                    if (data != null) {
+                        imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            default: break;
         }
 
         if(imageBitmap != null){
