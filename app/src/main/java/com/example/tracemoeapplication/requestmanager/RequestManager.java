@@ -8,14 +8,25 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tracemoeapplication.R;
+import com.example.tracemoeapplication.dtos.AnilistRequestDto;
+import com.example.tracemoeapplication.dtos.AnimeDto;
+import com.example.tracemoeapplication.dtos.DataDto;
 import com.example.tracemoeapplication.dtos.MatchListDto;
 import com.example.tracemoeapplication.interfaces.RequestManagerListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RequestManager {
@@ -75,6 +86,36 @@ public class RequestManager {
                 return dataMap;
             }
         };
+
+        addToRequestQueue(request);
+    }
+
+    public void getAnimes(Collection<Integer> ids) {
+        String url = "https://trace.moe/anilist";
+
+        Response.Listener<JSONObject> responseListener = response -> {
+            DataDto data = (new Gson()).fromJson(response.toString(), DataDto.class);
+            List<AnimeDto> animes = new ArrayList<>(data.getPage().getMedia());
+            listener.onGetAnimeResponse(animes);
+        };
+
+        Response.ErrorListener responseErrorListener = error -> listener.onGetAnimeResponseError(error);
+
+        // Request body
+        AnilistRequestDto requestObject = new AnilistRequestDto();
+        requestObject.getVariables().setIds(ids);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject((new Gson()).toJson(requestObject));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(jsonObject == null){
+            return;
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, responseListener, responseErrorListener);
 
         addToRequestQueue(request);
     }

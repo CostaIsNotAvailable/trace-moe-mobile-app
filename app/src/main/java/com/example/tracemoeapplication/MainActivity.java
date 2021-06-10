@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.tracemoeapplication.dtos.AnimeDto;
+import com.example.tracemoeapplication.dtos.MatchDto;
 import com.example.tracemoeapplication.dtos.MatchListDto;
 import com.example.tracemoeapplication.enums.HowToGetImageDialogOptionEnum;
 import com.example.tracemoeapplication.interfaces.HowToGetImageDialogListener;
@@ -21,6 +23,8 @@ import com.example.tracemoeapplication.requestmanager.RequestManager;
 import com.example.tracemoeapplication.screenslide.ScreenSlidePagerActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, HowToGetImageDialogListener, RequestManagerListener {
     private Button selectImageButton;
@@ -110,6 +114,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onPostImageResponse(MatchListDto matchList) {
         if(matchList != null && matchList.getResult() != null){
+            Collection<Integer> ids = new ArrayList<>();
+            for(MatchDto match: matchList.getResult()){
+                ids.add((int)match.getAnilist());
+            }
+            RequestManager.getInstance(this).getAnimes(ids);
             displayMatchList(matchList);
         } else {
             Toast.makeText(this, R.string.response_error_text, Toast.LENGTH_LONG).show();
@@ -120,6 +129,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onPostImageResponseError(Exception exception) {
         stopLoading();
         Toast.makeText(this, R.string.response_error_text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onGetAnimeResponse(Collection<AnimeDto> animes) {
+        for(AnimeDto anime: animes){
+            System.out.println(anime.getTitle());
+        }
+    }
+
+    @Override
+    public void onGetAnimeResponseError(Exception exception) {
+
     }
 
     // Image post response error
