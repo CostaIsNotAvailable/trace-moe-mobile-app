@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Image post response error
     @Override
     public void onPostImageResponseError(Exception exception) {
         stopLoading();
@@ -142,8 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onGetAnimeResponseError(Exception exception) {
 
     }
-
-    // Image post response error
 
     // Launch the activity that will display the list
     public void displayMatchList(MatchListDto matchList) {
