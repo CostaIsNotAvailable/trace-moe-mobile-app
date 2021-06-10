@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.tracemoeapplication.dtos.MatchListDto;
 import com.example.tracemoeapplication.enums.HowToGetImageDialogOptionEnum;
@@ -93,7 +94,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Image post response
     @Override
     public void onPostImageResponse(MatchListDto matchList) {
-        displayMatchList(matchList);
+        if(matchList != null && matchList.getResult() != null){
+            displayMatchList(matchList);
+        } else {
+            Toast.makeText(this, R.string.response_error_text, Toast.LENGTH_LONG).show();
+        }
     }
 
     // Launch the activity that will display the list
