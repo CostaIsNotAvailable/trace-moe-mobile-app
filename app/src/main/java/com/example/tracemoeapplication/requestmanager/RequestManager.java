@@ -2,12 +2,14 @@ package com.example.tracemoeapplication.requestmanager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.widget.Toast;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.tracemoeapplication.dtos.MatchDto;
+import com.example.tracemoeapplication.R;
 import com.example.tracemoeapplication.dtos.MatchListDto;
 import com.example.tracemoeapplication.interfaces.RequestManagerListener;
 import com.google.gson.Gson;
@@ -62,9 +64,9 @@ public class RequestManager {
             listener.onPostImageResponse(matchList);
         };
 
-        Response.ErrorListener responseErrorListener = error -> System.out.println(error.getMessage());
+        Response.ErrorListener responseErrorListener = error -> Toast.makeText(context, R.string.response_error_text, Toast.LENGTH_LONG).show();
 
-        MultipartRequest request = new MultipartRequest(Request.Method.POST, url, responseListener, responseErrorListener){
+        MultipartRequest request = new MultipartRequest(context, Request.Method.POST, url, responseListener, responseErrorListener){
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> dataMap = new HashMap<>();

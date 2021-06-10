@@ -11,4 +11,7 @@
     <string name="time_slide_text">%1$s - %2$s</string>
     <string name="similarity_slide_text">Similaire à %1$s</string>
     <string name="time_form_text">%1$s:%2$s:%3$s</string>
+    <string name="image_to_body_request_error_text">Une erreur s\'est produite lors du traitement de l\'image</string>
+    <string name="parse_request_response_error_text">Une erreur s\'est produite lors du traitement la réponse de la requête</string>
+    <string name="response_error_text">Une erreur s\'est produite lors du traitement de la requête</string>
 </resources>
