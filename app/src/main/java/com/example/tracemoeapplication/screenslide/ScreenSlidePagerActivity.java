@@ -31,6 +31,8 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         viewPager = findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
+
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());
     }
 
     public MatchListDto getMatchList() {
