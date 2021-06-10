@@ -14,4 +14,5 @@
     <string name="image_to_body_request_error_text">Une erreur s\'est produite lors du traitement de l\'image</string>
     <string name="parse_request_response_error_text">Une erreur s\'est produite lors du traitement la réponse de la requête</string>
     <string name="response_error_text">Une erreur s\'est produite lors du traitement de la requête</string>
+    <string name="image_selection_error_text">Une erreur s\'est produite lors de la sélection de l\'image</string>
 </resources>

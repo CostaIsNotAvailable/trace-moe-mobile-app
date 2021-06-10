@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.tracemoeapplication.dtos.MatchListDto;
@@ -23,7 +24,8 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, HowToGetImageDialogListener, RequestManagerListener {
     private Button selectImageButton;
-    private ImageView imageView;
+    private ProgressBar progressBar;
+
     private static final int TAKE_PHOTO_REQUEST_CODE = 100;
     private static final int IMPORT_FROM_GALLERY_REQUEST_CODE = 101;
     public static final String EXTRA_MATCH_LIST = "EXTRA_MATCH_LIST";
@@ -35,10 +37,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Instances
         selectImageButton = findViewById(R.id.selectImageButton);
-        imageView = findViewById(R.id.imageView);
+        progressBar = findViewById(R.id.progressBar);
 
         // Listeners
         selectImageButton.setOnClickListener(this);
+
+        // Set default visibilities
+        progressBar.setVisibility(View.GONE);
+        selectImageButton.setVisibility(View.VISIBLE);
     }
 
     // Open image selection options dialog
@@ -86,8 +92,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if(imageBitmap != null){
-            imageView.setImageBitmap(imageBitmap);
+            loading();
             RequestManager.getInstance(this).postImage(imageBitmap);
+        } else {
+            Toast.makeText(this, R.string.image_selection_error_text, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -101,10 +109,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onPostImageResponseError(Exception exception) {
+        stopLoading();
+        Toast.makeText(this, R.string.response_error_text, Toast.LENGTH_LONG).show();
+    }
+
+    // Image post response error
+
     // Launch the activity that will display the list
-    public void displayMatchList(MatchListDto matchList){
+    public void displayMatchList(MatchListDto matchList) {
         Intent intent = new Intent(this, ScreenSlidePagerActivity.class);
         intent.putExtra(EXTRA_MATCH_LIST, matchList);
         startActivity(intent);
+        stopLoading();
+    }
+
+    private void loading() {
+        selectImageButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void stopLoading() {
+        progressBar.setVisibility(View.GONE);
+        selectImageButton.setVisibility(View.VISIBLE);
     }
 }

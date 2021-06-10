@@ -64,7 +64,7 @@ public class RequestManager {
             listener.onPostImageResponse(matchList);
         };
 
-        Response.ErrorListener responseErrorListener = error -> Toast.makeText(context, R.string.response_error_text, Toast.LENGTH_LONG).show();
+        Response.ErrorListener responseErrorListener = error -> listener.onPostImageResponseError(error);
 
         MultipartRequest request = new MultipartRequest(context, Request.Method.POST, url, responseListener, responseErrorListener){
             @Override

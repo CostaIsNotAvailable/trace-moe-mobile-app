@@ -5,20 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="0dp"
     tools:context=".MainActivity">
 
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleX="0.10"
+        android:scaleY="0.10"
+        tools:visibility="gone" />
 
     <Button
         android:id="@+id/selectImageButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/select_image_button_text" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/image_view_content_description"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:text="@string/select_image_button_text"
+        android:visibility="visible" />
+
 </LinearLayout>
